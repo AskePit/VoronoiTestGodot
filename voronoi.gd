@@ -21,6 +21,28 @@ enum SpaceMetric {
 	CHEBYSHEV,
 }
 
+func getSpaceMetricOrder(metric: SpaceMetric) -> float:
+	match metric:
+		SpaceMetric.EUCLID:    return 2
+		SpaceMetric.MANHATTAN: return 1
+		SpaceMetric.CHEBYSHEV: return 9999999 # it's fake!
+		SpaceMetric.M_025:     return 0.25
+		SpaceMetric.M_05:      return 0.5
+		SpaceMetric.M_075:     return 0.75
+		SpaceMetric.M_08:      return 0.8
+		SpaceMetric.M_09:      return 0.9
+		SpaceMetric.M_095:     return 0.95
+		SpaceMetric.M_099:     return 0.99
+		SpaceMetric.M_11:      return 1.1
+		SpaceMetric.M_12:      return 1.2
+		SpaceMetric.M_13:      return 1.3
+		SpaceMetric.M_15:      return 1.5
+		SpaceMetric.M_17:      return 1.7
+		SpaceMetric.M_3:       return 3
+		SpaceMetric.M_4:       return 4
+		SpaceMetric.M_5:       return 5
+	return 2 # default Euclidean fallback
+
 const SIZE := 640
 @export var SITES_COUNT := 10:
 	set(new_value):
@@ -119,42 +141,13 @@ func minkovski_distance(a : Vector2, b : Vector2, order: float) -> float:
 func distance(a : Vector2, b : Vector2, metric = SpaceMetric.EUCLID) -> float:
 	match metric:
 		SpaceMetric.EUCLID:
-			return sqrt(pow(b.x - a.x, 2) + pow(b.y - a.y, 2))
+			return (b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y) # for comparison purposes there is no need in sqrt
 		SpaceMetric.MANHATTAN:
 			return abs(b.x - a.x) + abs(b.y - a.y)
 		SpaceMetric.CHEBYSHEV:
 			return max(abs(b.x - a.x), abs(b.y - a.y))
-		SpaceMetric.M_025:
-			return minkovski_distance(a, b, 0.25)
-		SpaceMetric.M_05:
-			return minkovski_distance(a, b, 0.5)
-		SpaceMetric.M_075:
-			return minkovski_distance(a, b, 0.75)
-		SpaceMetric.M_08:
-			return minkovski_distance(a, b, 0.8)
-		SpaceMetric.M_09:
-			return minkovski_distance(a, b, 0.9)
-		SpaceMetric.M_095:
-			return minkovski_distance(a, b, 0.95)
-		SpaceMetric.M_099:
-			return minkovski_distance(a, b, 0.99)
-		SpaceMetric.M_11:
-			return minkovski_distance(a, b, 1.1)
-		SpaceMetric.M_12:
-			return minkovski_distance(a, b, 1.2)
-		SpaceMetric.M_13:
-			return minkovski_distance(a, b, 1.3)
-		SpaceMetric.M_15:
-			return minkovski_distance(a, b, 1.5)
-		SpaceMetric.M_17:
-			return minkovski_distance(a, b, 1.7)
-		SpaceMetric.M_3:
-			return minkovski_distance(a, b, 3)
-		SpaceMetric.M_4:
-			return minkovski_distance(a, b, 4)
-		SpaceMetric.M_5:
-			return minkovski_distance(a, b, 5)
-	return sqrt(pow(b.x - a.x, 2) + pow(b.y - a.y, 2))
+		_:
+			return minkovski_distance(a, b, getSpaceMetricOrder(metric))
 
 func _ready():
 	restructure_points()

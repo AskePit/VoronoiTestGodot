@@ -4,6 +4,4 @@
 
 [node name="Voronoi" type="Node2D"]
 script = ExtResource("1_a183o")
-METRIC = 7
-UNSATURATION = -0.1
-DETALIZATION = 4
+DETALIZATION = 3
