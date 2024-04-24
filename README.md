@@ -20,7 +20,7 @@ Chebyshev metric ($p=\infty$). Detalization = 3px
 
 ---
 
-Metric $p=0.5$. Detalization = 1px
+Metric $p=1.5$. Detalization = 1px
 
 ![image](https://github.com/AskePit/VoronoiTestGodot/assets/23142629/961239d0-01a5-4130-b01c-9acdb58f05fa)
 
